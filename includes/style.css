@@ -1,0 +1,56 @@
+html, body {
+  height:100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+    /* цвет фона 
+    background-color: #ffffff; */
+    background: url(fon.jpg); 
+    
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+	font-size:17px;
+	color: #ffffff;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+	width: 100%;
+	
+	
+	border-spacing: 0;
+	margin-top:0;
+}
+
+a:link, a:active, a:visited{
+	color:#88FF80;
+	text-decoration:none;
+}
+
+a:hover {
+	color:#FFFFFF;
+}
+
+input.reg {
+    width:  300px;
+    height: 35px;
+    padding: 5px 10px 5px 10px;
+    border: 1px solid #999;
+    font-size: 20px;    
+}
+
+.current {
+	color:#FFFFFF;
+}
+
+.read {
+	color:#ff0000;
+	font-size: 140%;
+	border: 1px dotted red; 
+}
