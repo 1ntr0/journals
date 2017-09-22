@@ -8,11 +8,13 @@
 
 class user
 {
-    public function User($login, $password, $email, $admin = null)
+    public function User($login, $password, $email = null, $admin = null)
     {
         $this->login = $login;
-        $this->password = $password;
-        $this->email = $email;
+        $this->password = $password;       
+        if (isset($email)) {
+            $this->email = $email;
+        }
         if (isset($admin)) {
             $this->admin = $admin;
         }
@@ -24,15 +26,25 @@ class user
         $stmt = $pdo->prepare('INSERT INTO users (login, password, email) VALUES (:login, :password, :email)');
         $stmt->bindParam(':login', $this->login);
         $stmt->bindParam(':password', $this->password);
-        $stmt->bindParam(':password', $this->email);
+        $stmt->bindParam(':email', $this->email);
         $stmt->execute();
     }
 
 
-    public function db_select()
+    public function db_select_id()
     {
         global $pdo;
-        $stmt = $pdo->prepare('SELECT * FROM users WHERE login = ?');
+        $stmt = $pdo->prepare('SELECT id FROM users WHERE login = ?');
+        $stmt->execute(array($this->login));
+        $result = $stmt->fetch();
+
+        return $result;
+    }
+
+    public function db_select_password()
+    {
+        global $pdo;
+        $stmt = $pdo->prepare('SELECT password FROM users WHERE login = ?');
         $stmt->execute(array($this->login));
         $result = $stmt->fetch();
 

@@ -8,6 +8,7 @@ session_start();
 if ($_POST['email'] != '') {
     exit;
 }
+
 session_start();
 require_once 'includes/db.php';
 require_once 'includes/user.php';
@@ -33,23 +34,20 @@ require_once 'includes/user.php';
 <tr height=100%><td></td>
 <td valign=top>
 	<div align=center>
+
 	
 	<form id="form_reg" action="" method="post" >
 	<h1>Регистрация</h1><br>
 	<input class="reg" required placeholder="Имя" type="text" name="login" /><br>
 	<input class="reg" name="email" type="hidden"  />
-	<input class="reg" required placeholder="Почта" type="text" name="pochta" /><br>
+	<input class="reg" required placeholder="Почта" type="text" name="pochta"  /><br>
 	<input class="reg" required placeholder="Пароль" type="password" name="password" /><br>
 	<input class="reg" required placeholder="Повтор пароля" type="password" name="r_password" /><br><br>
-	<input class="reg" style="cursor:pointer" type="submit" name="reg" value="Вход" />
-	
-	
-	
+	<input class="reg" style="cursor:pointer" type="submit" name="press_button" value="Вход" />	
 	</form>
 
-
 <?php
-if (isset($_POST['reg'])) {
+if (isset($_POST['press_button'])) {
     $login = $_POST['login'];
     $pochta = $_POST['pochta'];
     $password = $_POST['password'];
@@ -82,32 +80,22 @@ if (isset($_POST['reg'])) {
         $err[] = 'Пароль должен быть не меньше 3 символов и не больше 20';
     }
     // проверяем, не сущестует ли пользователя с таким именем
-    $password = md5($password);
-    $user = new User($login, $password, $email);
-    $isUser = $user->IsUserInBD();
-    if ($isUser) {
+    $password = password_hash($password, PASSWORD_DEFAULT);    
+    $user = new User($login, $password, $pochta);
+    $user_id = $user->db_select_id();
+    
+    if ($user_id) {
         $err[] = 'Пользователь с таким логином уже существует';
-    }
+    }    
+
     // если нет ошибок, то добавляем в бд
-    if (count($err) == 0) {
-        echo $user->DB_Insert();
-            
-        //echo 'Регистрация успешна';
-            
-            
-
+    if (empty($err)) {
+        echo $user->db_insert();       
     
-        $c_user = $user->IsUserInBD();
-    
-        $_SESSION['login'] = $user->login;
-        $_SESSION['user_id'] = $c_user[0]['id'];
-        $_SESSION['admin'] = $c_user[0]['admin'];
-            
-            
-            
+        $_SESSION['login'] = $user->login;  
+        
 
-        echo '<script>history.go(-2)</script>';
-        exit();
+
     } else {
         echo '<b>При регистрации произошли следующие ошибки:</b><br>';
         foreach ($err as $error) {
