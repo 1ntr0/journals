@@ -11,7 +11,7 @@ class user
     public function User($login, $password, $email = null, $admin = null)
     {
         $this->login = $login;
-        $this->password = $password;       
+        $this->password = $password;
         if (isset($email)) {
             $this->email = $email;
         }
@@ -46,7 +46,7 @@ class user
         global $pdo;
         $stmt = $pdo->prepare('SELECT password FROM users WHERE login = ?');
         $stmt->execute(array($this->login));
-        $result = $stmt->fetch();
+        $result = $stmt->fetchColumn();
 
         return $result;
     }

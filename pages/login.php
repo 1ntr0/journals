@@ -5,32 +5,18 @@ require_once 'includes/functions.php';
 
 // выход
 if (isset($_POST['quit'])) {
-    unset($_SESSION['login']); 
-    unset($user);   
+    unset($_SESSION['login']);
+    unset($user);
 }
 // авторизация
 if (isset($_POST['enter'])) {
     $user = new User(clean($_POST['e_login']), clean($_POST['e_password']));
     
-    //пароль из базы
-    $password = $user->db_select_password();    
+    //хеш пароля из базы
+    $password_hash = $user->db_select_password();
 
-var_dump($user);
-echo '<br>';echo '<br>';
-var_dump($_POST);
-echo '<br>';echo '<br>';
-//var_dump($password);
-echo '<br>';echo '<br>';
-echo "$password[0]";
-echo '<br>';echo '<br>';
-//var_dump($user->password);
-echo '<br>';echo '<br>';
-echo $user->password;
-echo '<br>';echo '<br>';
-
-    if (password_verify($user->password, $password[0])) {
-        $_SESSION['login'] = $user->login; 
-        
+    if (password_verify($user->password, $password_hash)) {
+        $_SESSION['login'] = $user->login;
     } else {
         echo 'Введен неправильный логин или пароль';
     }
@@ -42,7 +28,6 @@ if (isset($_SESSION['login'])) {
     echo 'Вы вошли как: '.$_SESSION['login'].' ';
     echo '<br><input style="cursor:pointer" type="submit" name="quit" value="Выход" />
 	</form>';
-
 } else {
     echo '
 		<form id="form_enter" action="" method="post">

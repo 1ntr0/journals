@@ -3,7 +3,7 @@ $host = 'localhost';
 $db = 'ntr';
 $charset = 'utf8';
 $user = 'root';
-$pass = '';
+$pass = 'zrhen';
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $opt = array(
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

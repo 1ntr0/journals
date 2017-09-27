@@ -80,22 +80,19 @@ if (isset($_POST['press_button'])) {
         $err[] = 'Пароль должен быть не меньше 3 символов и не больше 20';
     }
     // проверяем, не сущестует ли пользователя с таким именем
-    $password = password_hash($password, PASSWORD_DEFAULT);    
+    $password = password_hash($password, PASSWORD_DEFAULT);
     $user = new User($login, $password, $pochta);
     $user_id = $user->db_select_id();
     
     if ($user_id) {
         $err[] = 'Пользователь с таким логином уже существует';
-    }    
+    }
 
     // если нет ошибок, то добавляем в бд
     if (empty($err)) {
-        echo $user->db_insert();       
+        echo $user->db_insert();
     
-        $_SESSION['login'] = $user->login;  
-        
-
-
+        $_SESSION['login'] = $user->login;
     } else {
         echo '<b>При регистрации произошли следующие ошибки:</b><br>';
         foreach ($err as $error) {
